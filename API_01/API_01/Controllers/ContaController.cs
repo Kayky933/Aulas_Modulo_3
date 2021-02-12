@@ -15,16 +15,9 @@ namespace API_01.Controllers
     public class ContaController : ControllerBase
     {
         private readonly DataBaseContext _context;
-
-        public ICollection<ContaModel> conta;
-
+        
         public ContaController(DataBaseContext context)
-        {
-            conta = new List<ContaModel>();
-            conta.Add(new ContaModel() { Id = 1, NomeDoCredor= "MARCOS", DataDoVencimento = DateTime.Parse("10/01/2020"), ValorAPagar  = 10, DataDoPagamento = null });
-            conta.Add(new ContaModel() { Id = 2, NomeDoCredor = "JUNIOR", DataDoVencimento = DateTime.Parse("13/02/2020"), ValorAPagar = 12, DataDoPagamento = null });
-            conta.Add(new ContaModel() { Id = 3, NomeDoCredor = "MARIA", DataDoVencimento = DateTime.Parse("20/04/2020"), ValorAPagar = 40, DataDoPagamento = null });
-            conta.Add(new ContaModel() { Id = 4, NomeDoCredor = "PEDRO", DataDoVencimento = DateTime.Parse("22/02/2020"), ValorAPagar = 14, DataDoPagamento = null });
+        {            
             _context = context;
         }
 
