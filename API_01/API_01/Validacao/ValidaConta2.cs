@@ -12,13 +12,14 @@ namespace API_01.Validacao
         public ValidaConta2()
         {
             RuleFor(c => c.NomeDoCredor).NotEmpty().WithMessage("O campo Nome não pode ser vazio !")
+                 .NotNull().WithMessage("O campo não pode ser nulo!")
                                .MaximumLength(100).WithMessage("O campo nome não pode ultrapassar 100 caracteres");
 
             RuleFor(c => c.ValorAPagar).NotEmpty().WithMessage("O campo não pode ser nulo!")
-                .GreaterThan(0).WithMessage("o campo temque ser maior que 0!");
+                .GreaterThan(0).WithMessage("O campo temque ser maior que 0!")
+                .NotNull().WithMessage("O campo não pode ser nulo!");
 
-            RuleFor(c => c.DataDoVencimento).NotEmpty().WithMessage("A data não pode ser nula!");
-            RuleFor(c => c.DataDoPagamento).NotEmpty().WithMessage("A data não pode ser nula!");
+            RuleFor(c => c.DataDoVencimento).NotNull().WithMessage("O campo não pode ser nulo!");
 
 
         }
