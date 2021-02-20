@@ -1,4 +1,5 @@
 ﻿using API_01.Data;
+using API_01.Interfaces.Repository;
 using API_01.Interfaces.Service;
 using API_01.Models;
 using Microsoft.EntityFrameworkCore;
@@ -9,13 +10,13 @@ using System.Threading.Tasks;
 
 namespace API_01.Service
 {
-    public class ContaService : IContaService
+    public class contaRepository : IContaService
     {
-        private readonly IContaService _contaService;
+        private readonly IContaRepository _contaRepository;
 
-        public ContaService(IContaService contaService)
+        public contaRepository(IContaRepository contaRepository)
         {
-            _contaService = contaService;
+            _contaRepository = contaRepository;
         }
 
         public bool Delete(int id)
@@ -24,18 +25,17 @@ namespace API_01.Service
             if (obj == null)
                 return false;
 
-            return _contaService.Delete(id);
-
+            return _contaRepository.Delete(id);
         }
 
         public IEnumerable<ContaModel> GetAll()
         {
-            return _contaService.GetAll().OrderBy(a => a.NomeDoCredor);
+            return _contaRepository.GetAll().OrderBy(a => a.NomeDoCredor);
         }
 
         public ContaModel GetOne(int id)
         {
-            return _contaService.GetOne(id);
+            return _contaRepository.GetOne(id);
         }
 
         public ContaModel Insert(ContaModel conta)
@@ -44,19 +44,17 @@ namespace API_01.Service
             {
                 if (conta.NomeDoCredor == "")
                     return null;
-                return _contaService.Insert(conta);
-                
+               return _contaRepository.Insert(conta);
             }
             catch (Exception)
             {
                 return null;
-            }
+            }           
         }
 
         public ContaModel Update(ContaModel conta)
         {
-
-            return _contaService.Update(conta);
+            return _contaRepository.Update(conta);
         }
     }
 }

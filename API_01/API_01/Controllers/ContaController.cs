@@ -25,14 +25,14 @@ namespace API_01.Controllers
 
         // GET: api/Conta
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContaModel>>> GetConta()
+        public ActionResult<IEnumerable<ContaModel>> GetConta()
         {
             return Ok(_contaService.GetAll());
         }
 
         // GET: api/Conta/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ContaModel>> GetContaModel(int id)
+        public ActionResult<ContaModel> GetContaModel(int id)
         {
             var contaModel = _contaService.GetOne(id);
 
@@ -72,13 +72,14 @@ namespace API_01.Controllers
         if (response == null)
             return BadRequest();
 
-        return CreatedAtAction("GetContaModel", new { id = contaModel.Id }, contaModel);
+        return CreatedAtAction("GetContatoModel", new { id = contaModel.Id }, contaModel);
 
     }
 
+
     // DELETE: api/Conta/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<ContaModel>> DeleteContaModel(int id)
+    public ActionResult<ContaModel> DeleteContaModel(int id)
     {
         var response = _contaService.GetOne(id);
         if (response == null)
