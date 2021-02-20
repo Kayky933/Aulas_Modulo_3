@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API_01.Data;
 using API_01.Models;
+using API_01.Interfaces.Service;
 
 namespace API_01.Controllers
 {
@@ -14,34 +15,26 @@ namespace API_01.Controllers
     [ApiController]
     public class ContaController : ControllerBase
     {
-        private readonly DataBaseContext _context;
+        private readonly IContaService _contaService;
 
-        public ICollection<ContaModel> contas;
-        
-        public ContaController(DataBaseContext context)
-        {            
-            _context = context;
+        public ContaController(IContaService contaService)
+        {
+            _contaService = contaService;
 
-            contas = new List<ContaModel>();
-            contas.Add(new ContaModel() { Id = 1, NomeDoCredor = "MARCOS", DataDoVencimento = DateTime.Parse("10/01/2020"), ValorAPagar = 10, DataDoPagamento = null });
-            contas.Add(new ContaModel() { Id = 2, NomeDoCredor = "JUNIOR", DataDoVencimento = DateTime.Parse("13/02/2020"), ValorAPagar = 12, DataDoPagamento = null });
-            contas.Add(new ContaModel() { Id = 3, NomeDoCredor = "MARIA", DataDoVencimento = DateTime.Parse("20/04/2020"), ValorAPagar = 40, DataDoPagamento = null });
-            contas.Add(new ContaModel() { Id = 4, NomeDoCredor = "PEDRO", DataDoVencimento = DateTime.Parse("22/02/2020"), ValorAPagar = 14, DataDoPagamento = null });
-            
         }
 
         // GET: api/Conta
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ContaModel>>> GetConta()
-        {            
-            return await _context.Conta.ToListAsync();
+        {
+            return Ok(_contaService.GetAll());
         }
 
         // GET: api/Conta/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ContaModel>> GetContaModel(int id)
         {
-            var contaModel = await _context.Conta.FindAsync(id);
+            var contaModel = _contaService.GetOne(id);
 
             if (contaModel == null)
             {
@@ -53,64 +46,54 @@ namespace API_01.Controllers
 
         // PUT: api/Conta/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutContaModel(int id, ContaModel contaModel)
+        public ActionResult<ContaModel> PutContaModel(int id, ContaModel contaModel)
         {
             if (id != contaModel.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(contaModel).State = EntityState.Modified;
+            var response = _contaService.Update(contaModel);
 
-            try
-            {
-              
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContaModelExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Conta
-        [HttpPost]
-        public async Task<ActionResult<ContaModel>> PostContaModel(ContaModel contaModel)
-        {
-            _context.Conta.Add(contaModel);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetContaModel", new { id = contaModel.Id }, contaModel);
-        }
-
-        // DELETE: api/Conta/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ContaModel>> DeleteContaModel(int id)
-        {
-            var contaModel = await _context.Conta.FindAsync(id);
-            if (contaModel == null)
-            {
+            if (response == null)
                 return NotFound();
-            }
+            return Ok(response);
 
-            _context.Conta.Remove(contaModel);
-            await _context.SaveChangesAsync();
-
-            return contaModel;
-        }
-
-        private bool ContaModelExists(int id)
-        {
-            return _context.Conta.Any(e => e.Id == id);
         }
     }
+
+    // POST: api/Conta
+    [HttpPost]
+    public ActionResult<ContaModel> PostContaModel(ContaModel contaModel)
+    {
+
+        var response = _contaService.Insert(contaModel);
+
+        if (response == null)
+            return BadRequest();
+
+        return CreatedAtAction("GetContaModel", new { id = contaModel.Id }, contaModel);
+
+    }
+
+    // DELETE: api/Conta/5
+    [HttpDelete("{id}")]
+    public async Task<ActionResult<ContaModel>> DeleteContaModel(int id)
+    {
+        var response = _contaService.GetOne(id);
+        if (response == null)
+        {
+            return NotFound();
+        }
+        if (!_contaService.Delete(id))
+            return BadRequest();
+
+        return Ok();
+    }
+
+    private bool ContaModelExists(int id)
+    {
+        return _contaService.Conta.Any(e => e.Id == id);
+    }
 }
+
