@@ -32,7 +32,6 @@ namespace API_01.Repository
             }
         }
 
-
         public IEnumerable<ContaModel> GetAll()
         {
             return _context.Conta.ToList();
@@ -64,14 +63,14 @@ namespace API_01.Repository
 
         public ContaModel Update(ContaModel conta)
         {
-            _context.Entry(conta).State = EntityState.Modified;
             try
             {
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return this.GetOne(conta.Id);
             }
             catch (DbUpdateConcurrencyException)
             {
+
                 return null;
             }
         }
