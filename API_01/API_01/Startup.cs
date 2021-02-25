@@ -36,8 +36,24 @@ namespace API_01
                .AddFluentValidation(c =>
                            c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.AddScoped<Interfaces.Service.IContaService, ContaService>();
-            services.AddScoped<Interfaces.Repository.IContaRepository, ContaRepository>();
+            services.AddScoped<IContaService, ContaService>();
+            services.AddScoped<IContaRepository, ContaRepository>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new Microsoft.OpenApi.Models.OpenApiInfo()
+                    {
+                        Title = "Primeira api do curso Desenvolvimento Etec",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
+                        {
+                            Email = "kayky.santana@etec.sp.gov.br",
+                            Name = "Kayky Matos",
+                            Url = new Uri("http://www.etecitu.com.br")
+                        },
+                        Description = "Esta api é um teste"
+                    });
+            });
 
             var connection = Configuration["ConnectionStrings:Conexao"];
             services.AddDbContext<DataBaseContext>(options =>
@@ -56,6 +72,11 @@ namespace API_01
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Primeira Api ");
+            });
             app.UseMvc();
         }
     }
