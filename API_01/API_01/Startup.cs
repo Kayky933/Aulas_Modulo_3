@@ -54,12 +54,14 @@ namespace API_01
                         Description = "Esta api é um teste"
                     });
             });
-
+            /*
             var connection = Configuration["ConnectionStrings:Conexao"];
             services.AddDbContext<DataBaseContext>(options =>
                 options.UseMySql(connection)
             );
-
+            */
+             services.AddDbContext<DataBaseContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("Conexao")));
             // Add framework services.
             services.AddMvc();
         }

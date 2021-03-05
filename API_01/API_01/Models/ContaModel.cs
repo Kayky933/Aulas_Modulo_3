@@ -11,6 +11,7 @@ namespace API_01.Models
     {
         [Key]
         public int Id { get; set; }
+        
         [MaxLength(100, ErrorMessage = "O campo deve ter no máximo {1} caracteres")]
         public string NomeDoCredor { get; set; }
 
