@@ -42,16 +42,9 @@ namespace API_01.Service
             return _contaRepository.GetOne(id);
         }
 
-        public ContaModel Insert(ContaModel conta)
-        {
-            if (conta.NomeDoCredor == "")
-                return null;
-
-            return _contaRepository.Insert(conta);
-        }
-
         public object Insert(ContaModelRequest contaRequest)
         {
+
             var conta = contaRequest.ToContaModel();
 
             var validacao = new ContaModelValidator().Validate(conta);
@@ -73,8 +66,30 @@ namespace API_01.Service
             return _contaRepository.Insert(conta);
         }
 
-        public ContaModel Update(ContaModel conta)
+        public object Update(ContaModel conta)
         {
+            var validacao = new ContaModelValidator().Validate(conta);
+
+            if (!validacao.IsValid)
+            {
+                var erros = validacao.Errors.Select(a => a.ErrorMessage).ToList();
+                return erros;
+            }
+
+            // busca no banco de dados a entidade atrelada do código
+            var contatoDb = _contaRepository.GetOne(conta.Id);
+            if (contatoDb == null)
+            {
+                return new List<string>() { "o id do contato não existe no banco de dados" };
+            }
+
+            // business validation
+
+            contatoDb.Email = conta.Email;
+            contatoDb.NomeDoCredor = conta.NomeDoCredor;
+            contatoDb.DataDoPagamento = conta.DataDoPagamento;
+
+
             return _contaRepository.Update(conta);
         }
     }

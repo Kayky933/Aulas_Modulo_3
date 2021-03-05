@@ -21,5 +21,9 @@ namespace API_01.Interfaces.Repository
         IEnumerable<ContaModel> GetByName(string name);
 
         ContaModel GetByEmail(string email);
+
+        bool ContactNameExist(int codigo, string name);
+
+        bool ContactEmailExist(int codigo, string email);
     }
 }

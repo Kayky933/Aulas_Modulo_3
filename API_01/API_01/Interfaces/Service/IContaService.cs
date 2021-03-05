@@ -13,8 +13,8 @@ namespace API_01.Interfaces.Service
         ContaModel GetOne(int id);
 
 
-        ContaModel Update(ContaModel conta);
-        ContaModel Insert(ContaModel conta);
+        object Update(ContaModel conta);
+       
 
         bool Delete(int id);
         object Insert(ContaModelRequest contaModel);

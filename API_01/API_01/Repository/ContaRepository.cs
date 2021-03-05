@@ -18,6 +18,18 @@ namespace API_01.Repository
             _context = context;
         }
 
+        public bool ContactEmailExist(int id, string email)
+        {
+            var item = _context.Conta.Where(a => a.Email == email && a.Id != id).ToList();
+            return item.Any();
+        }
+
+        public bool ContactNameExist(int id, string name)
+        {
+            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id!= id).ToList();
+            return item.Any();
+        }
+
         public bool Delete(ContaModel conta)
         {
             try
@@ -37,14 +49,14 @@ namespace API_01.Repository
             return _context.Conta.ToList();
         }
 
-        public IEnumerable<ContaModel> GetByEmail(string email)
+        public ContaModel GetByEmail(string email)
         {
-            return _context.Conta.Where(a => a.Email == email);
+            return _context.Conta.Where(a => a.Email == email).LastOrDefault();
         }
 
         public IEnumerable<ContaModel> GetByName(string name)
         {
-            throw new NotImplementedException();
+            return _context.Conta.Where(n => n.NomeDoCredor == name);
         }
 
         public ContaModel GetOne(int id)
@@ -78,11 +90,6 @@ namespace API_01.Repository
 
                 return null;
             }
-        }
-
-        ContaModel IContaRepository.GetByEmail(string email)
-        {
-            throw new NotImplementedException();
         }
     }
 
