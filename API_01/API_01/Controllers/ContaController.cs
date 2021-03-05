@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using API_01.Data;
 using API_01.Models;
 using API_01.Interfaces.Service;
+using API_01.Contracts.Post;
 
 namespace API_01.Controllers
 {
@@ -64,15 +65,17 @@ namespace API_01.Controllers
 
         // POST: api/Conta
         [HttpPost]
-        public ActionResult<ContaModel> PostContaModel(ContaModel contaModel)
+        public ActionResult<ContaModel> PostContaModel(ContaModelRequest contaModel)
         {
 
             var response = _contaService.Insert(contaModel);
 
-            if (response == null)
-                return BadRequest();
+            if (response.GetType() != typeof(ContaModel))
+                return BadRequest(response);
 
-            return CreatedAtAction("GetConta", new { id = contaModel.Id }, contaModel);
+            var resposta = (ContaModel)response;
+
+            return CreatedAtAction("GetContaModel", new { id = resposta.Id }, resposta);
 
         }
 
