@@ -37,6 +37,11 @@ namespace API_01.Repository
             return _context.Conta.ToList();
         }
 
+        public IEnumerable<ContaModel> GetByEmail(string email)
+        {
+            return _context.Conta.Where(a => a.Email == email);
+        }
+
         public IEnumerable<ContaModel> GetByName(string name)
         {
             throw new NotImplementedException();
@@ -73,6 +78,11 @@ namespace API_01.Repository
 
                 return null;
             }
+        }
+
+        ContaModel IContaRepository.GetByEmail(string email)
+        {
+            throw new NotImplementedException();
         }
     }
 

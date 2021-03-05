@@ -21,5 +21,7 @@ namespace API_01.Models
         public decimal ValorAPagar { get; set; }
 
         public DateTime? DataDoPagamento { get; set; }
+
+        public string Email { get; set; }
     }
 }

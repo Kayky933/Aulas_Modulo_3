@@ -18,6 +18,8 @@ namespace API_01.Interfaces.Repository
 
         bool Delete(ContaModel conta);
 
-        IEnumerable<ContaModel> GetByName(string name);       
+        IEnumerable<ContaModel> GetByName(string name);
+
+        ContaModel GetByEmail(string email);
     }
 }

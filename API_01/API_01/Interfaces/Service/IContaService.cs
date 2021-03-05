@@ -1,4 +1,5 @@
-﻿using API_01.Models;
+﻿using API_01.Contracts.Post;
+using API_01.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,6 @@ namespace API_01.Interfaces.Service
         ContaModel Insert(ContaModel conta);
 
         bool Delete(int id);
+        object Insert(ContaModelRequest contaModel);
     }
 }

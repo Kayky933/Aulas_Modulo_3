@@ -1,8 +1,12 @@
-﻿using API_01.Data;
+﻿using API_01.Contracts.Post;
+using API_01.Data;
+using API_01.ExtensionMethods;
 using API_01.Interfaces.Repository;
 using API_01.Interfaces.Service;
 using API_01.Models;
 using API_01.Repository;
+using API_01.Validacao;
+using API_01.Validators.BusinessValidator;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,6 +46,29 @@ namespace API_01.Service
         {
             if (conta.NomeDoCredor == "")
                 return null;
+
+            return _contaRepository.Insert(conta);
+        }
+
+        public object Insert(ContaModelRequest contaRequest)
+        {
+            var conta = contaRequest.ToContaModel();
+
+            var validacao = new ContaModelValidator().Validate(conta);
+
+            if (!validacao.IsValid)
+            {
+                var erros = validacao.Errors.Select(a => a.ErrorMessage).ToList();
+                return erros;
+            }
+
+            var businessValidation = new ContaBusinessValidator(_contaRepository).Validate(conta);
+
+            if (!businessValidation.IsValid)
+            {
+                var erros = businessValidation.Errors.Select(a => a.ErrorMessage).ToList();
+                return erros;
+            }
 
             return _contaRepository.Insert(conta);
         }
