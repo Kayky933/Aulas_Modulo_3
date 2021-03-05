@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace API_01.Validacao
 {
-    public class ValidaConta2 : AbstractValidator<ContaModel>
+    public class ValidaConta : AbstractValidator<ContaModel>
     {
-        public ValidaConta2()
+        public ValidaConta()
         {
             RuleFor(c => c.NomeDoCredor).NotEmpty().WithMessage("O campo Nome não pode ser vazio !")
                  .NotNull().WithMessage("O campo não pode ser nulo!")
@@ -18,10 +18,6 @@ namespace API_01.Validacao
             RuleFor(c => c.ValorAPagar).NotEmpty().WithMessage("O campo não pode ser nulo!")
                 .GreaterThan(0).WithMessage("O campo temque ser maior que 0!")
                 .NotNull().WithMessage("O campo não pode ser nulo!");
-
-            RuleFor(c => c.DataDoVencimento).NotNull().WithMessage("O campo não pode ser nulo!");
-
-
         }
     }
 }

@@ -60,41 +60,37 @@ namespace API_01.Controllers
             return Ok(response);
 
         }
-    }
-
-    // POST: api/Conta
-    [HttpPost]
-    public ActionResult<ContaModel> PostContaModel(ContaModel contaModel)
-    {
-        
-        var response = _contaService.Insert(contaModel);
-
-        if (response == null)
-            return BadRequest();
-
-        return CreatedAtAction("GetContatoModel", new { id = contaModel.Id }, contaModel);
-
-    }
 
 
-    // DELETE: api/Conta/5
-    [HttpDelete("{id}")]
-    public ActionResult<ContaModel> DeleteContaModel(int id)
-    {
-        var response = _contaService.GetOne(id);
-        if (response == null)
+        // POST: api/Conta
+        [HttpPost]
+        public ActionResult<ContaModel> PostContaModel(ContaModel contaModel)
         {
-            return NotFound();
+
+            var response = _contaService.Insert(contaModel);
+
+            if (response == null)
+                return BadRequest();
+
+            return CreatedAtAction("GetConta", new { id = contaModel.Id }, contaModel);
+
         }
-        if (!_contaService.Delete(id))
-            return BadRequest();
 
-        return Ok();
-    }
 
-    private bool ContaModelExists(int id)
-    {
-        return _contaService.Conta.Any(e => e.Id == id);
+        // DELETE: api/Conta/5
+        [HttpDelete("{id}")]
+        public ActionResult<ContaModel> DeleteContaModel(int id)
+        {
+            var response = _contaService.GetOne(id);
+            if (response == null)
+            {
+                return NotFound();
+            }
+            if (!_contaService.Delete(id))
+                return BadRequest();
+
+            return Ok();
+        }
     }
 }
 

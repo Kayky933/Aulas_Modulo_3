@@ -22,7 +22,7 @@ namespace API_01.Service
 
         public bool Delete(int id)
         {
-            var obj =this.GetOne(id);
+            var obj = this.GetOne(id);
             if (obj == null)
                 return false;
             return _contaRepository.Delete(obj);
