@@ -12,7 +12,7 @@ namespace API_01.Repository
     public class ContaRepository : IContaRepository
     {
         private readonly DataBaseContext _context;
-
+ 
         public ContaRepository(DataBaseContext context)
         {
             _context = context;
@@ -69,7 +69,7 @@ namespace API_01.Repository
             try
             {
                 _context.Conta.Add(conta);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return conta;
             }
             catch (Exception)
