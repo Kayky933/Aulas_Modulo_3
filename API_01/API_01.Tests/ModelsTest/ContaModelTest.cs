@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace API_01.Models
+namespace API_01.Tests.ModelsTest
 {
-    public class ContaModelUnitTest
+    public class ContaModelTest
     {
         public int Id { get; set; }
-               
+
         public string NomeDoCredor { get; set; }
 
-        public DateTime DataDoVencimento{ get; set; }
+        public DateTime DataDoVencimento { get; set; }
 
         public decimal ValorAPagar { get; set; }
 
