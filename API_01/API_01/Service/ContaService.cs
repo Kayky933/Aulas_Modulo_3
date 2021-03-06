@@ -40,7 +40,7 @@ namespace API_01.Service
         public ContaModel GetOne(int id)
         {
             return _contaRepository.GetOne(id);
-        }
+        } 
 
         public object Insert(ContaModelRequest contaRequest)
         {
