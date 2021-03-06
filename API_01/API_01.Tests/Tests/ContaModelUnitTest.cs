@@ -1,22 +1,23 @@
-﻿using API_01.Models;
+﻿using API_01.Tests.ModelsTest;
 using API_01.Validacao;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
 
-namespace API01Tests.Tests
+namespace API_01.Tests.Tests
 {
-   public class ContaModelTest
+    public class ContaModelUnitTest
     {
-        private ContaModelUnitTest conta;
-        public ContaModelTest()
+        private ContaModelTest conta;
+        public ContaModelUnitTest()
         {
-            conta = new ContaModelUnitTest()
+            conta = new ContaModelTest()
             {
                 Id = 1,
-                NomeDoCredor = "João",
-                Email = "joao@gmail.com",
+                NomeDoCredor = "João Pedro Augusto",
+                Email = "joaopedro@gmail.com",
                 DataDoPagamento = DateTime.Parse("18-02-2021"),
                 DataDoVencimento = DateTime.Parse("20-02-2020"),
                 ValorAPagar = 10
@@ -31,6 +32,33 @@ namespace API01Tests.Tests
 
             Assert.True(result.IsValid);
         }
+        #region
+        [Theory(DisplayName = "Teste de Nomes Válidos")]
+        [InlineData("João Pedro Algusto")]
+        [InlineData("Marcos Antônio Meireles")]
+        [InlineData("Felipe Smith Samu")]
+        public void NomeDeveSerValida(string StrName)
+        {
+            var validador = new ContaModelValidatorTest();
+            conta.NomeDoCredor = StrName;
+            var result = validador.Validate(conta);
+
+            Assert.True(result.IsValid);
+        }
+
+        [Theory(DisplayName = "Teste de Nomes Inválidos")]
+        [InlineData("João")]
+        [InlineData("Marcos")]
+        [InlineData("Felipe")]
+        public void NomeDeveSerInvalida(string StrName)
+        {
+            var validador = new ContaModelValidatorTest();
+            conta.NomeDoCredor = StrName;
+            var result = validador.Validate(conta);
+
+            Assert.False(result.IsValid);
+        }
+        #endregion
 
         [Theory(DisplayName = "Teste de emails inválidos")]
         [InlineData("aaaaa")]
@@ -47,6 +75,7 @@ namespace API01Tests.Tests
         }
 
         [Theory(DisplayName = "Teste de datas de vencimento")]
+        [InlineData("01/01/2019")]
         [InlineData("01/01/2020")]
         [InlineData("01/01/2021")]
         public void DataDeveSerValida(string dataStr)
@@ -58,10 +87,10 @@ namespace API01Tests.Tests
             Assert.True(result.IsValid);
         }
 
-        [Theory(DisplayName = "Teste de datas de nascimento")]
-        [InlineData("01/01/2022")]
-        [InlineData("01/01/2023")]
-        [InlineData("01/01/2054")]
+        [Theory(DisplayName = "Teste de datas de Pagamentos já efetuados")]
+        [InlineData("01-01-2024")]
+        [InlineData("01-01-2023")]
+        [InlineData("01-01-2022")]
         public void DataDeveSerInValida(string dataStr)
         {
             var validador = new ContaModelValidatorTest();
