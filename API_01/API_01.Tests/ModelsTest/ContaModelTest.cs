@@ -14,7 +14,7 @@ namespace API_01.Tests.ModelsTest
 
         public decimal ValorAPagar { get; set; }
 
-        public DateTime? DataDoPagamento { get; set; }
+        public DateTime DataDoPagamento { get; set; }
 
         public string Email { get; set; }
     }

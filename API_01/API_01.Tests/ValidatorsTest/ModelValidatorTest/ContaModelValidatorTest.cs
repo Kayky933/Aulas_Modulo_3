@@ -18,7 +18,8 @@ namespace API_01.Validacao
                                .MinimumLength(10).WithMessage(ContaModelErrorMenssagesTest.NameCantBeLessThan10);
 
             RuleFor(c => c.DataDoPagamento).NotEmpty().WithMessage(ContaModelErrorMenssagesTest.DateCantBeEmpty)
-                        .NotNull().WithMessage(ContaModelErrorMenssagesTest.DateCantBeEmpty);
+                        .NotNull().WithMessage(ContaModelErrorMenssagesTest.DateCantBeEmpty)
+                        .LessThanOrEqualTo(DateTime.Now).WithMessage(ContaModelErrorMenssagesTest.DateCantBeGreaterThanNow); ;
 
 
             RuleFor(c => c.Email).NotEmpty().WithMessage(ContaModelErrorMenssagesTest.EmailCantBeEmpty)
@@ -27,8 +28,8 @@ namespace API_01.Validacao
                                .MinimumLength(13).WithMessage(ContaModelErrorMenssagesTest.EmailCantBeLessThan13);
 
             RuleFor(c => c.ValorAPagar).NotEmpty().WithMessage(ContaModelErrorMenssagesTest.ValueCantBeNull)
-                .GreaterThan(0).WithMessage(ContaModelErrorMenssagesTest.ValueCantBeLessThan1)
-                .NotNull().WithMessage(ContaModelErrorMenssagesTest.ValueCantBeNull);
+                .NotNull().WithMessage(ContaModelErrorMenssagesTest.ValueCantBeNull)
+                .GreaterThan(0).WithMessage(ContaModelErrorMenssagesTest.ValueCantBeLessThan1);
         }
     }
 }
