@@ -17,9 +17,9 @@ namespace API_01.Service
 {
     public class ContaService : IContaService
     {
-        private readonly ContaRepository _contaRepository;
+        private readonly IContaRepository _contaRepository;
 
-        public ContaService(ContaRepository contaRepository)
+        public ContaService(IContaRepository contaRepository)
         {
             _contaRepository = contaRepository;
         }

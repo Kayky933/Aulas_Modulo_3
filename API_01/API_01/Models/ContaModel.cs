@@ -12,7 +12,7 @@ namespace API_01.Models
         [Key]
         public int Id { get; set; }
         
-        [MaxLength(100, ErrorMessage = "O campo deve ter no máximo {1} caracteres")]
+        [MaxLength(100)]
         public string NomeDoCredor { get; set; }
 
         public DateTime DataDoVencimento{ get; set; }
@@ -21,7 +21,7 @@ namespace API_01.Models
         public decimal ValorAPagar { get; set; }
 
         public DateTime? DataDoPagamento { get; set; }
-
+        [MaxLength(100)]
         public string Email { get; set; }
     }
 }
