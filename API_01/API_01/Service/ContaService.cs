@@ -77,7 +77,7 @@ namespace API_01.Service
             }
 
             // busca no banco de dados a entidade atrelada do código
-            var contatoDb = _contaRepository.GetOne(conta.Id);
+            var contatoDb = _contaRepository.GetOne(conta.Id_Conta);
             if (contatoDb == null)
             {
                 return new List<string>() { "o id do contato não existe no banco de dados" };

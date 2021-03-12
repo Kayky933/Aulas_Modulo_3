@@ -49,7 +49,7 @@ namespace API_01.Controllers
         [HttpPut("{id}")]
         public ActionResult<ContaModel> PutContaModel(int id, ContaModel contaModel)
         {
-            if (id != contaModel.Id)
+            if (id != contaModel.Id_Conta)
             {
                 return BadRequest();
             }
@@ -75,7 +75,7 @@ namespace API_01.Controllers
 
             var resposta = (ContaModel)response;
 
-            return CreatedAtAction("GetContaModel", new { id = resposta.Id }, resposta);
+            return CreatedAtAction("GetContaModel", new { id = resposta.Id_Conta }, resposta);
 
         }
 
