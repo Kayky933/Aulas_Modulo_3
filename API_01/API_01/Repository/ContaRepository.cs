@@ -20,13 +20,13 @@ namespace API_01.Repository
 
         public bool ContactEmailExist(int id, string email)
         {
-            var item = _context.Conta.Where(a => a.Email == email && a.Id != id).ToList();
+            var item = _context.Conta.Where(a => a.Email == email && a.Id_Conta != id).ToList();
             return item.Any();
         }
 
         public bool ContactNameExist(int id, string name)
         {
-            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id!= id).ToList();
+            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id_Conta != id).ToList();
             return item.Any();
         }
 
@@ -83,7 +83,7 @@ namespace API_01.Repository
             try
             {
                 _context.SaveChanges();
-                return this.GetOne(conta.Id);
+                return this.GetOne(conta.Id_Conta);
             }
             catch (DbUpdateConcurrencyException)
             {

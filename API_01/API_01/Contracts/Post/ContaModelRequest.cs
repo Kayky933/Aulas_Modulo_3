@@ -13,7 +13,7 @@ namespace API_01.Contracts.Post
 
         public decimal ValorAPagar { get; set; }
 
-        public DateTime? DataDoPagamento { get; set; }
+        public DateTime DataDoPagamento { get; set; }
 
         public string Email { get; set; }
     }

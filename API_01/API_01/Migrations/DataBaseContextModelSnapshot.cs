@@ -21,15 +21,16 @@ namespace API_01.Migrations
 
             modelBuilder.Entity("API_01.Models.ContaModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Id_Conta")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("DataDoPagamento");
+                    b.Property<DateTime>("DataDoPagamento");
 
                     b.Property<DateTime>("DataDoVencimento");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasMaxLength(100);
 
                     b.Property<string>("NomeDoCredor")
                         .HasMaxLength(100);
@@ -37,7 +38,7 @@ namespace API_01.Migrations
                     b.Property<decimal>("ValorAPagar")
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id_Conta");
 
                     b.ToTable("Conta");
                 });
