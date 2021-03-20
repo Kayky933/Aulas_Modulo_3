@@ -36,6 +36,16 @@ namespace API_01
                .AddFluentValidation(c =>
                            c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins", config =>
+                     config.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader()
+                           // .AllowCredentials()
+                           .Build()
+                );
+            });
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IContaRepository, ContaRepository>();
 
@@ -54,12 +64,7 @@ namespace API_01
                         Description = "Esta api é um teste"
                     });
             });
-            /*
-            var connection = Configuration["ConnectionStrings:Conexao"];
-            services.AddDbContext<DataBaseContext>(options =>
-                options.UseMySql(connection)
-            );
-            */
+
              services.AddDbContext<DataBaseContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("Conexao")));
             // Add framework services.
@@ -73,6 +78,9 @@ namespace API_01
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseHttpsRedirection();
+
+            app.UseCors("AllowAllOrigins");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
