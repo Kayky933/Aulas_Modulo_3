@@ -25,7 +25,7 @@ namespace API_01
         {
             Configuration = configuration;
         }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -36,16 +36,15 @@ namespace API_01
                .AddFluentValidation(c =>
                            c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.AddCors(options =>
+          
+        services.AddCors(options =>
+        {
+            options.AddPolicy(MyAllowSpecificOrigins,
+            builder =>
             {
-                options.AddPolicy("AllowAllOrigins", config =>
-                     config.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           // .AllowCredentials()
-                           .Build()
-                );
+                builder.WithOrigins("http://localhost:8100/conta-cadastro");
             });
+        });
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IContaRepository, ContaRepository>();
 
@@ -80,7 +79,7 @@ namespace API_01
             }
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowAllOrigins");
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
