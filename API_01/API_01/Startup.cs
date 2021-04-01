@@ -25,7 +25,7 @@ namespace API_01
         {
             Configuration = configuration;
         }
-
+         
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -36,16 +36,18 @@ namespace API_01
                .AddFluentValidation(c =>
                            c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
+
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAllOrigins", config =>
-                     config.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader()
-                           // .AllowCredentials()
-                           .Build()
-                );
+                options.AddPolicy("AllowAllOrigins",
+                config =>
+                {
+                    config.AllowAnyOrigin()
+                               .AllowAnyMethod()
+                               .AllowAnyHeader();
+                });
             });
+
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IContaRepository, ContaRepository>();
 
@@ -65,8 +67,8 @@ namespace API_01
                     });
             });
 
-             services.AddDbContext<DataBaseContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("Conexao")));
+            services.AddDbContext<DataBaseContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("Conexao")));
             // Add framework services.
             services.AddMvc();
         }
