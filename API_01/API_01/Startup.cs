@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API_01.Data;
+﻿using API_01.Data;
 using API_01.Interfaces.Repository;
 using API_01.Interfaces.Service;
 using API_01.Repository;
@@ -14,8 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using System;
 
 namespace API_01
 {

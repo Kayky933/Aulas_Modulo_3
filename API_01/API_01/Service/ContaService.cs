@@ -1,17 +1,12 @@
 ﻿using API_01.Contracts.Post;
-using API_01.Data;
 using API_01.ExtensionMethods;
 using API_01.Interfaces.Repository;
 using API_01.Interfaces.Service;
 using API_01.Models;
-using API_01.Repository;
 using API_01.Validacao;
 using API_01.Validators.BusinessValidator;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace API_01.Service
 {

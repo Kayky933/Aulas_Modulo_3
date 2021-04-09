@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using API_01.Data;
-using API_01.Models;
+﻿using API_01.Contracts.Post;
 using API_01.Interfaces.Service;
-using API_01.Contracts.Post;
+using API_01.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace API_01.Controllers
 {

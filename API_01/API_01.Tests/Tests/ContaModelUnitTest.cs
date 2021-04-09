@@ -1,9 +1,6 @@
 ﻿using API_01.Tests.ModelsTest;
 using API_01.Validacao;
-using FluentValidation;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
 namespace API_01.Tests.Tests
