@@ -35,6 +35,7 @@ namespace API_2._0
             services.AddDbContext<API2_Context>(options =>
                    options.UseSqlServer(Configuration.GetConnectionString("Conection")));
 
+
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IContaRepository, ContaRepository>();
             services.AddCors(options =>
@@ -53,14 +54,14 @@ namespace API_2._0
                 c.SwaggerDoc("v1",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "Primeira api do curso Desenvolvimento Etec",
+                        Title = "API 2.0",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
                             Email = "kayky7277@gmail.com",
-                            Name = "Kayky Matos Santana",
+                            Name = "Kayky Matos",
                             Url = new Uri("http://www.etecitu.com.br")
                         },
-                        Description = "Esta api é um teste"
+                        Description = "Criação de uma nova api no dotnet 3.1"
                     });
             });
         }
@@ -79,7 +80,13 @@ namespace API_2._0
 
             app.UseAuthorization();
             app.UseCors("AllowAllOrigins");
+
             app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API 2.0 ");
+            });
+
 
             app.UseEndpoints(endpoints =>
             {

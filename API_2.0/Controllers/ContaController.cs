@@ -92,7 +92,7 @@ namespace API_2._0.Controllers
 
             return Ok(contaModel);
         }
-
+        /*
         private bool ContaModelExists(int id)
         {
             var conta = _contaService.GetOne(id);
@@ -101,5 +101,6 @@ namespace API_2._0.Controllers
 
             return false;
         }
+        */
     }
 }
