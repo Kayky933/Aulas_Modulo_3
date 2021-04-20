@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace API_2._0.Models
 {
-    [Table("Conta")]
     public class ContaModel
     {
         [Key]

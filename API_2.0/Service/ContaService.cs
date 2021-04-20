@@ -2,7 +2,7 @@
 using API_2._0.Interfaces.Repository;
 using API_2._0.Interfaces.Service;
 using API_2._0.Models;
-using API_2._0.Models.Contracts;
+using API_2._0.Models.ModelsPost;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,6 @@ namespace API_2._0.Service
     public class ContaService : IContaService
     {
         private readonly IContaRepository _contaRepository;
-
         public ContaService(IContaRepository contaRepository)
         {
             _contaRepository = contaRepository;
@@ -28,12 +27,7 @@ namespace API_2._0.Service
 
         public IEnumerable<ContaModel> GetAll()
         {
-           return _contaRepository.GetAll().OrderBy(a => a.Id_Conta);
-        }
-
-        public ContaModel GetByEmail(string email)
-        {
-            return _contaRepository.GetByEmail(email);
+            return _contaRepository.GetAll();
         }
 
         public ContaModel GetOne(int id)
@@ -41,19 +35,23 @@ namespace API_2._0.Service
             return _contaRepository.GetOne(id);
         }
 
-        public object Insert(ContaModel contaModel)
-        {
-            return _contaRepository.Insert(contaModel);
-        }
-
         public object Insert(ContaModelRequest contaModel)
         {
-            var contaPost = ContaModelExtension.ToContaModel(contaModel);
-            return _contaRepository.Insert(contaPost);
+            var conta = ContaModelExtension.ToContaModel(contaModel);
+            return _contaRepository.Insert(conta);
         }
 
         public object Update(ContaModel conta)
         {
+            var contatoDb = _contaRepository.GetOne(conta.Id_Conta);
+            if (contatoDb == null)
+            {
+                return new List<string>() { "o id do contato não existe no banco de dados" };
+            }
+            contatoDb.Email = conta.Email;
+            contatoDb.NomeDoCredor = conta.NomeDoCredor;
+            contatoDb.DataDoPagamento = conta.DataDoPagamento;
+
             return _contaRepository.Update(conta);
         }
     }

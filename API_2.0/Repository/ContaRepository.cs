@@ -1,7 +1,6 @@
-﻿using API_2._0.Context;
+﻿using API_2._0.Data;
 using API_2._0.Interfaces.Repository;
 using API_2._0.Models;
-using API_2._0.Models.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,25 +11,35 @@ namespace API_2._0.Repository
 {
     public class ContaRepository : IContaRepository
     {
-        private readonly API2_Context _context;
-        public ContaRepository(API2_Context context)
+        private readonly APIContext _context;
+        public ContaRepository(APIContext context)
         {
             _context = context;
+        }
+        public bool ContactEmailExist(int codigo, string email)
+        {
+            var item = _context.Conta.Where(a => a.Email == email && a.Id_Conta == codigo).ToList();
+            return item.Any();
+        }
+
+        public bool ContactNameExist(int codigo, string name)
+        {
+            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id_Conta != codigo).ToList();
+            return item.Any();
         }
 
         public bool Delete(ContaModel conta)
         {
             try
             {
-                _context.Remove(conta);
-                _context.SaveChanges();
+                _context.Conta.Remove(conta);
+                _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
             {
                 return false;
             }
-            
         }
 
         public IEnumerable<ContaModel> GetAll()
@@ -40,24 +49,24 @@ namespace API_2._0.Repository
 
         public ContaModel GetByEmail(string email)
         {
-            return _context.Conta.Where(e => e.Email == email).LastOrDefault();
-        }       
+            return _context.Conta.Where(a => a.Email == email).FirstOrDefault();
+        }
 
         public IEnumerable<ContaModel> GetByName(string name)
         {
-            return _context.Conta.Where(e => e.NomeDoCredor == name);
+            return _context.Conta.Where(a => a.NomeDoCredor == name);
         }
 
         public ContaModel GetOne(int id)
         {
-            return _context.Conta.Where(e => e.Id_Conta == id).FirstOrDefault();
+            return _context.Conta.Where(a => a.Id_Conta == id).FirstOrDefault();
         }
 
         public ContaModel Insert(ContaModel conta)
         {
             try
             {
-                _context.Conta.Add(conta);
+                _context.Add(conta);
                 _context.SaveChanges();
                 return conta;
             }
@@ -76,7 +85,6 @@ namespace API_2._0.Repository
             }
             catch (DbUpdateConcurrencyException)
             {
-
                 return null;
             }
         }

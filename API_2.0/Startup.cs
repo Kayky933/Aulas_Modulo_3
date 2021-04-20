@@ -1,8 +1,9 @@
-using API_2._0.Context;
+using API_2._0.Data;
 using API_2._0.Interfaces.Repository;
 using API_2._0.Interfaces.Service;
 using API_2._0.Repository;
 using API_2._0.Service;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,12 +33,11 @@ namespace API_2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<API2_Context>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("Conection")));
+            services.AddMvc()
+               .AddFluentValidation(c =>
+                           c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
 
-            services.AddScoped<IContaService, ContaService>();
-            services.AddScoped<IContaRepository, ContaRepository>();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
@@ -48,22 +48,26 @@ namespace API_2._0
                                .AllowAnyHeader();
                 });
             });
-
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
                     new Microsoft.OpenApi.Models.OpenApiInfo()
                     {
-                        Title = "API 2.0",
+                        Title = "Primeira api do curso Desenvolvimento Etec",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact()
                         {
-                            Email = "kayky7277@gmail.com",
+                            Email = "kayky.santana@etec.sp.gov.br",
                             Name = "Kayky Matos",
                             Url = new Uri("http://www.etecitu.com.br")
                         },
-                        Description = "Criação de uma nova api no dotnet 3.1"
+                        Description = "Esta api é um teste"
                     });
             });
+            services.AddScoped<IContaService, ContaService>();
+            services.AddScoped<IContaRepository, ContaRepository>();
+
+            services.AddDbContext<APIContext>(options =>
+                 options.UseSqlServer(Configuration.GetConnectionString("Connection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,20 +83,19 @@ namespace API_2._0
             app.UseRouting();
 
             app.UseAuthorization();
+
             app.UseCors("AllowAllOrigins");
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API 2.0 ");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Primeira Api ");
             });
-
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using API_2._0.Models;
-using API_2._0.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +10,12 @@ namespace API_2._0.Interfaces.Repository
     {
         IEnumerable<ContaModel> GetAll();
         ContaModel GetOne(int id);
-        ContaModel GetByEmail(string email);
-        IEnumerable<ContaModel> GetByName(string name);
         ContaModel Update(ContaModel conta);
-        bool Delete(ContaModel conta);
         ContaModel Insert(ContaModel conta);
+        bool Delete(ContaModel conta);
+        IEnumerable<ContaModel> GetByName(string name);
+        ContaModel GetByEmail(string email);
+        bool ContactNameExist(int codigo, string name);
+        bool ContactEmailExist(int codigo, string email);
     }
 }

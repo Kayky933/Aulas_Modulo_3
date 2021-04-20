@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using API_2._0.Context;
+using API_2._0.Data;
 using API_2._0.Models;
-using API_2._0.Interfaces.Service;
-using API_2._0.Models.Contracts;
 
 namespace API_2._0.Controllers
 {
@@ -16,91 +14,97 @@ namespace API_2._0.Controllers
     [ApiController]
     public class ContaController : ControllerBase
     {
-        private readonly IContaService _contaService;
+        private readonly APIContext _context;
 
-        public ContaController(IContaService contaService)
+        public ContaController(APIContext context)
         {
-            _contaService = contaService;
+            _context = context;
         }
 
         // GET: api/Conta
         [HttpGet]
-        public ActionResult<IEnumerable<ContaModel>> GetConta()
+        public async Task<ActionResult<IEnumerable<ContaModel>>> GetConta()
         {
-            return Ok(_contaService.GetAll());
+            return await _context.Conta.ToListAsync();
         }
 
         // GET: api/Conta/5
         [HttpGet("{id}")]
-        public ActionResult<ContaModel> GetContaModel(int id)
+        public async Task<ActionResult<ContaModel>> GetContaModel(int id)
         {
-            var contaModel = _contaService.GetOne(id);
+            var contaModel = await _context.Conta.FindAsync(id);
 
             if (contaModel == null)
             {
                 return NotFound();
             }
 
-            return Ok(contaModel);
+            return contaModel;
         }
 
         // PUT: api/Conta/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public IActionResult PutContaModel(int id, ContaModel contaModel)
+        public async Task<IActionResult> PutContaModel(int id, ContaModel contaModel)
         {
             if (id != contaModel.Id_Conta)
             {
                 return BadRequest();
             }
-            var response = _contaService.Update(contaModel);
-            if (response == null)
-                return NotFound();
 
-            return Ok(response);
+            _context.Entry(contaModel).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ContaModelExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
         // POST: api/Conta
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public ActionResult<ContaModel> PostContaModel(ContaModelRequest contaModel)
+        public async Task<ActionResult<ContaModel>> PostContaModel(ContaModel contaModel)
         {
-            var response = _contaService.Insert(contaModel);
+            _context.Conta.Add(contaModel);
+            await _context.SaveChangesAsync();
 
-            if (response.GetType() != typeof(ContaModel))
-                return BadRequest(response);
-
-            var response2 = (ContaModel)response;
-
-            return CreatedAtAction("GetContaModel", new { id = response2.Id_Conta }, response2);
+            return CreatedAtAction("GetContaModel", new { id = contaModel.Id_Conta }, contaModel);
         }
 
         // DELETE: api/Conta/5
         [HttpDelete("{id}")]
-        public ActionResult<ContaModel> DeleteContaModel(int id)
+        public async Task<ActionResult<ContaModel>> DeleteContaModel(int id)
         {
-            var contaModel = _contaService.Delete(id);
-            var exist = _contaService.GetOne(id);
-            if (exist == null)
+            var contaModel = await _context.Conta.FindAsync(id);
+            if (contaModel == null)
             {
                 return NotFound();
             }
-            if (!contaModel)
-                return BadRequest();
 
-            return Ok(contaModel);
+            _context.Conta.Remove(contaModel);
+            await _context.SaveChangesAsync();
+
+            return contaModel;
         }
-        /*
+
         private bool ContaModelExists(int id)
         {
-            var conta = _contaService.GetOne(id);
-            if (conta != null)
-                return true;
-
-            return false;
+            return _context.Conta.Any(e => e.Id_Conta == id);
         }
-        */
     }
 }
