@@ -16,25 +16,27 @@ namespace API_2._0.Controllers
     [ApiController]
     public class ContaController : ControllerBase
     {
-        private readonly IContaService _serviceContext;
 
-        public ContaController(IContaService serviceContext)
+        private readonly IContaService _contaService;
+
+        public ContaController(IContaService contaService)
         {
-            _serviceContext = serviceContext;
+            _contaService = contaService;
+
         }
 
         // GET: api/Conta
         [HttpGet]
         public ActionResult<IEnumerable<ContaModel>> GetConta()
         {
-            return Ok(_serviceContext.GetAll());
+            return Ok(_contaService.GetAll());
         }
 
         // GET: api/Conta/5
         [HttpGet("{id}")]
         public ActionResult<ContaModel> GetContaModel(int id)
         {
-            var contaModel = _serviceContext.GetOne(id);
+            var contaModel = _contaService.GetOne(id);
 
             if (contaModel == null)
             {
@@ -45,8 +47,6 @@ namespace API_2._0.Controllers
         }
 
         // PUT: api/Conta/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
         public ActionResult<ContaModel> PutContaModel(int id, ContaModel contaModel)
         {
@@ -55,22 +55,21 @@ namespace API_2._0.Controllers
                 return BadRequest();
             }
 
-            var response = _serviceContext.Update(contaModel);
+            var response = _contaService.Update(contaModel);
 
             if (response == null)
                 return NotFound();
             return Ok(response);
 
-
         }
 
+
         // POST: api/Conta
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         public ActionResult<ContaModel> PostContaModel(ContaModelRequest contaModel)
         {
-            var response = _serviceContext.Insert(contaModel);
+
+            var response = _contaService.Insert(contaModel);
 
             if (response.GetType() != typeof(ContaModel))
                 return BadRequest(response);
@@ -78,28 +77,23 @@ namespace API_2._0.Controllers
             var resposta = (ContaModel)response;
 
             return CreatedAtAction("GetContaModel", new { id = resposta.Id_Conta }, resposta);
+
         }
+
 
         // DELETE: api/Conta/5
         [HttpDelete("{id}")]
         public ActionResult<ContaModel> DeleteContaModel(int id)
         {
-            var contaModel = _serviceContext.Delete(id);
-            if (!contaModel)
+            var response = _contaService.GetOne(id);
+            if (response == null)
             {
                 return NotFound();
             }
+            if (!_contaService.Delete(id))
+                return BadRequest();
 
-            return Ok(contaModel);
-        }
-
-        public bool ContaModelExists(int id)
-        {
-            var response = _serviceContext.GetOne(id);
-            if (response != null)
-                return true;
-
-            return false;
+            return Ok();
         }
     }
 }

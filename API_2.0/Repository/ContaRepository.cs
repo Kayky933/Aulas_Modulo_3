@@ -16,15 +16,15 @@ namespace API_2._0.Repository
         {
             _context = context;
         }
-        public bool ContactEmailExist(int codigo, string email)
+        public bool ContactEmailExist(int id, string email)
         {
-            var item = _context.Conta.Where(a => a.Email == email && a.Id_Conta == codigo).ToList();
+            var item = _context.Conta.Where(a => a.Email == email && a.Id_Conta != id).ToList();
             return item.Any();
         }
 
-        public bool ContactNameExist(int codigo, string name)
+        public bool ContactNameExist(int id, string name)
         {
-            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id_Conta != codigo).ToList();
+            var item = _context.Conta.Where(a => a.NomeDoCredor == name && a.Id_Conta != id).ToList();
             return item.Any();
         }
 
@@ -49,24 +49,24 @@ namespace API_2._0.Repository
 
         public ContaModel GetByEmail(string email)
         {
-            return _context.Conta.Where(a => a.Email == email).FirstOrDefault();
+            return _context.Conta.Where(a => a.Email == email).LastOrDefault();
         }
 
         public IEnumerable<ContaModel> GetByName(string name)
         {
-            return _context.Conta.Where(a => a.NomeDoCredor == name);
+            return _context.Conta.Where(n => n.NomeDoCredor == name);
         }
 
         public ContaModel GetOne(int id)
         {
-            return _context.Conta.Where(a => a.Id_Conta == id).FirstOrDefault();
+            return _context.Conta.Find(id);
         }
 
         public ContaModel Insert(ContaModel conta)
         {
             try
             {
-                _context.Add(conta);
+                _context.Conta.Add(conta);
                 _context.SaveChanges();
                 return conta;
             }
@@ -85,6 +85,7 @@ namespace API_2._0.Repository
             }
             catch (DbUpdateConcurrencyException)
             {
+
                 return null;
             }
         }

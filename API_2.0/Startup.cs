@@ -3,20 +3,13 @@ using API_2._0.Interfaces.Repository;
 using API_2._0.Interfaces.Service;
 using API_2._0.Repository;
 using API_2._0.Service;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API_2._0
 {
@@ -33,9 +26,9 @@ namespace API_2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddMvc()
-               .AddFluentValidation(c =>
-                           c.RegisterValidatorsFromAssemblyContaining<Startup>());
+            //services.AddMvc()
+            //   .AddFluentValidation(c =>
+            //               c.RegisterValidatorsFromAssemblyContaining<Startup>());
 
 
             services.AddCors(options =>
@@ -48,6 +41,10 @@ namespace API_2._0
                                .AllowAnyHeader();
                 });
             });
+
+            services.AddScoped<IContaService, ContaService>();
+            services.AddScoped<IContaRepository, ContaRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
@@ -63,11 +60,9 @@ namespace API_2._0
                         Description = "Esta api é um teste"
                     });
             });
-            services.AddScoped<IContaService, ContaService>();
-            services.AddScoped<IContaRepository, ContaRepository>();
 
             services.AddDbContext<APIContext>(options =>
-                 options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+                   options.UseSqlServer(Configuration.GetConnectionString("Connection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,11 +74,9 @@ namespace API_2._0
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
-
             app.UseCors("AllowAllOrigins");
 
             app.UseSwagger();
@@ -91,7 +84,6 @@ namespace API_2._0
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Primeira Api ");
             });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

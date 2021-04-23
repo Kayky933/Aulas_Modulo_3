@@ -27,7 +27,7 @@ namespace API_2._0.Service
 
         public IEnumerable<ContaModel> GetAll()
         {
-            return _contaRepository.GetAll();
+            return _contaRepository.GetAll().OrderBy(a => a.NomeDoCredor);
         }
 
         public ContaModel GetOne(int id)
@@ -35,22 +35,28 @@ namespace API_2._0.Service
             return _contaRepository.GetOne(id);
         }
 
-        public object Insert(ContaModelRequest contaModel)
+        public object Insert(ContaModelRequest contaRequest)
         {
-            var conta = ContaModelExtension.ToContaModel(contaModel);
+            var conta = contaRequest.ToContaModel();
+
             return _contaRepository.Insert(conta);
         }
 
         public object Update(ContaModel conta)
-        {
+        {           
+            // busca no banco de dados a entidade atrelada do código
             var contatoDb = _contaRepository.GetOne(conta.Id_Conta);
             if (contatoDb == null)
             {
                 return new List<string>() { "o id do contato não existe no banco de dados" };
             }
+
+            // business validation
+
             contatoDb.Email = conta.Email;
             contatoDb.NomeDoCredor = conta.NomeDoCredor;
             contatoDb.DataDoPagamento = conta.DataDoPagamento;
+
 
             return _contaRepository.Update(conta);
         }
