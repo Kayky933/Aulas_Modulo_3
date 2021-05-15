@@ -1,15 +1,11 @@
 using API_2._0.Data;
-using API_2._0.Interfaces.Repository;
-using API_2._0.Interfaces.Service;
-using API_2._0.Repository;
-using API_2._0.Service;
+using API_2._0.StartUpConfig;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace API_2._0
 {
@@ -26,10 +22,6 @@ namespace API_2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddMvc()
-            //   .AddFluentValidation(c =>
-            //               c.RegisterValidatorsFromAssemblyContaining<Startup>());
-
 
             services.AddCors(options =>
             {
@@ -42,27 +34,14 @@ namespace API_2._0
                 });
             });
 
-            services.AddScoped<IContaService, ContaService>();
-            services.AddScoped<IContaRepository, ContaRepository>();
+            StartUpConfiguration.ConfigureDependencInjection(services);
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",
-                    new Microsoft.OpenApi.Models.OpenApiInfo()
-                    {
-                        Title = "Primeira api do curso Desenvolvimento Etec",
-                        Contact = new Microsoft.OpenApi.Models.OpenApiContact()
-                        {
-                            Email = "kayky.santana@etec.sp.gov.br",
-                            Name = "Kayky Matos",
-                            Url = new Uri("http://www.etecitu.com.br")
-                        },
-                        Description = "Esta api é um teste"
-                    });
-            });
+            StartUpConfiguration.ConfigureSwagger(services);
+
+            StartUpConfiguration.ConfigureAutoMapper(services);
 
             services.AddDbContext<APIContext>(options =>
-                   options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+                  options.UseSqlServer(Configuration.GetConnectionString("Connection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
