@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace API_2._0.Repository
 {
@@ -49,7 +48,7 @@ namespace API_2._0.Repository
 
         public ContaModel GetByEmail(string email)
         {
-            return _context.Conta.Where(a => a.Email == email).LastOrDefault();
+            return _context.Conta.Where(a => a.Email == email).FirstOrDefault();
         }
 
         public IEnumerable<ContaModel> GetByName(string name)
